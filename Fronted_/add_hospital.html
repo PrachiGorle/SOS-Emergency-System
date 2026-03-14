@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<title>Add Hospital</title>
+
+<style>
+
+body{
+font-family: Arial, Helvetica, sans-serif;
+background:#f4f6f8;
+margin:0;
+}
+
+/* HEADER */
+
+header{
+background:#1a6b3c;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header h1{
+margin:0;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-weight:bold;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+/* FORM CONTAINER */
+
+.container{
+width:500px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.container h2{
+margin-top:0;
+color:#1a6b3c;
+}
+
+/* FORM STYLE */
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#1a6b3c;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#145530;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:15px;
+margin-top:40px;
+color:#777;
+}
+.logo-area{
+display:flex;
+align-items:center;
+gap:10px;
+}
+.logo{
+font-size:28px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="logo-area">
+<i class="fa-solid fa-truck-medical logo"></i>
+<h1>SOS Emergency System</h1>
+</div>
+
+<nav>
+<a href="index.php">Dashboard</a>
+<a href="log_call.html">Log Call</a>
+<a href="create_incident.html">Create Incident</a>
+<a href="add_casualty.html">Add Casualty</a>
+<a href="assign_team.html">Assign Team</a>
+
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<h2>Add New Hospital</h2>
+
+<form id="hospitalForm">
+
+<label>Hospital Name:</label>
+<input type="text" name="name" required>
+
+<label>Available Beds:</label>
+<input type="number" name="beds" required>
+
+<label>Street:</label>
+<input type="text" name="street" required>
+
+<label>City:</label>
+<input type="text" name="city" required>
+
+<label>Zip Code:</label>
+<input type="text" name="zip" required>
+
+<button type="submit">Add Hospital</button>
+
+</form>
+
+</div>
+
+<footer>
+SOS Emergency System | DBMS Project
+</footer>
+
+<script>
+
+document.getElementById("hospitalForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const formData = new FormData(this);
+
+fetch("api_add_hospital.php", {
+method: "POST",
+body: formData
+})
+
+.then(res => res.text())
+
+.then(data => {
+
+data = data.trim();
+
+if(data === "SUCCESS"){
+alert("Hospital added successfully");
+document.getElementById("hospitalForm").reset();
+}
+else{
+alert(data);
+}
+
+})
+
+.catch(error => {
+alert("Error: " + error);
+});
+
+});
+
+</script>
+
+</body>
+</html>

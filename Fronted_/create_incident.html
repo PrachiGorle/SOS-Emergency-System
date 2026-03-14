@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<title>Create Incident</title>
+
+<style>
+
+body{
+font-family: Arial, Helvetica, sans-serif;
+background:#f4f6f8;
+margin:0;
+}
+
+/* HEADER */
+
+header{
+background:#1a6b3c;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header h1{
+margin:0;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-weight:bold;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+/* PAGE CONTAINER */
+
+.container{
+width:500px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.container h2{
+margin-top:0;
+color:#1a6b3c;
+}
+
+/* FORM STYLE */
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#1a6b3c;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#145530;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:15px;
+margin-top:40px;
+color:#777;
+}
+.logo-area{
+display:flex;
+align-items:center;
+gap:10px;
+}
+.logo{
+font-size:28px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-area">
+<i class="fa-solid fa-truck-medical logo"></i>
+<h1>SOS Emergency System</h1>
+</div>
+
+<nav>
+<a href="index.php">Dashboard</a>
+<a href="log_call.html">Log Call</a>
+<a href="add_casualty.html">Add Casualty</a>
+<a href="assign_team.html">Assign Team</a>
+<a href="add_hospital.html">Add Hospital</a>
+</nav>
+
+</header>
+
+
+<div class="container">
+
+<h2> Create Incident from Emergency Call</h2>
+
+<form action="save_incident.php" method="POST">
+
+<label>Emergency Call ID:</label>
+<input type="number" name="trigger_call_id" required>
+
+<label>Type:</label>
+<select name="type" required>
+<option value="Fire">Fire</option>
+<option value="Flood">Flood</option>
+<option value="Accident">Accident</option>
+<option value="Earthquake">Earthquake</option>
+<option value="Other">Other</option>
+</select>
+
+<label>Severity (1=Low, 5=Critical):</label>
+<input type="number" name="severity" min="1" max="5" required>
+
+<label>City:</label>
+<input type="text" name="city" required>
+
+<button type="submit">Create Incident</button>
+
+</form>
+
+</div>
+
+
+<footer>
+SOS Emergency System | DBMS Project
+</footer>
+
+
+<script>
+
+document.getElementById("incidentForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const formData = new FormData(this);
+
+fetch("api_create_incident.php", {
+method: "POST",
+body: formData
+})
+
+.then(res => res.text())
+
+.then(data => {
+
+data = data.trim();
+
+if(data.includes("success")){
+alert("Incident created successfully!");
+this.reset();
+}
+else{
+alert("Error: " + data);
+}
+
+})
+
+.catch(err => {
+alert("Server connection failed: " + err);
+});
+
+});
+
+const params = new URLSearchParams(window.location.search);
+const callId = params.get("call_id");
+
+document.getElementById("call_id").value = callId;
+
+</script>
+
+</body>
+</html>
